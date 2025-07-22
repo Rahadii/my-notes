@@ -70,7 +70,12 @@
 
     .accordion-content.open {
       padding: 1rem;
-      max-height: 300px;
+      max-height: 10000px;
+    }
+
+    img.dokumentasi {
+      height: 800px;
+      width: auto;
     }
 
     @keyframes fadeInDown {
@@ -106,7 +111,7 @@
             <p>Sehingga, perlu adanya penyesuaian terlebih dahulu, selain dari media adalah kondisi fisik yang perlu permulaan yang ringan sebelum ke tahap selanjutnya, karena jika langsung dimaksimalkan di awal maka fisik akan terkesan kaget dan akhirnya bisa berujung cidera.</p>
 
             <p><b>Moment ...</b>
-            <img src="img/eiko_team.jpg" alt="" width="100" height="100">`
+            <img src="img/eiko_team.jpg" alt="" class="dokumentasi" width="100" height="100">`
             </p>
           </div>
         </div>
@@ -149,23 +154,37 @@
   </div>
 
   <script>
-    function toggleAccordion(header) {
-      const content = header.nextElementSibling;
-      const allItems = document.querySelectorAll('.accordion-item');
-      const isAlreadyOpen = content.classList.contains('open');
+  function toggleAccordion(header) {
+    const allItems = document.querySelectorAll('.accordion-item');
 
-      // Tutup semua accordion
-      allItems.forEach(item => {
-        item.querySelector('.accordion-content').classList.remove('open');
-        item.querySelector('.toggle').textContent = '+';
-      });
+    allItems.forEach(item => {
+      const content = item.querySelector('.accordion-content');
+      const toggle = item.querySelector('.toggle');
 
-      // Jika yang diklik tadi belum terbuka, buka
-      if (!isAlreadyOpen) {
-        content.classList.add('open');
-        header.querySelector('.toggle').textContent = '-';
+      if (content.classList.contains('open')) {
+        content.style.height = 0;
+        content.classList.remove('open');
+        toggle.textContent = '+';
       }
+    });
+
+    const content = header.nextElementSibling;
+    const toggle = header.querySelector('.toggle');
+    const isAlreadyOpen = content.classList.contains('open');
+
+    if (!isAlreadyOpen) {
+      content.classList.add('open');
+      content.style.height = content.scrollHeight + 'px';
+      toggle.textContent = '-';
     }
-  </script>
+  }
+
+  // Optional: Reset height on window resize
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.accordion-content.open').forEach(content => {
+      content.style.height = content.scrollHeight + 'px';
+    });
+  });
+</script>
 </body>
 </html>
